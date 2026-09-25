@@ -1,7 +1,6 @@
 # Guía del Neófito
 
-Web hecha con Flask para introducirse en el lore de cada facción de Warhammer 40.000 — incluidas las 18 Legiones de Marines Espaciales de la Primera Fundación (leales y traidoras) y la Liga de Votann.
-
+Web hecha con Flask para introducirse en el lore de cada facción de Warhammer 40.000.
 ## Puesta en marcha
 
 ```bash
