@@ -1,0 +1,326 @@
+/* Guía del Neófito — estética gótica / religiosa imperial:
+   negro casi absoluto, oro viejo, pergamino, piedra tallada, vidrieras. */
+
+:root {
+  --black: #07080a;
+  --stone: #0e1113;
+  --panel: #14181b;
+  --line: #2b2620;
+  --line-soft: #1d201f;
+  --parchment: #d9cfae;
+  --parchment-dim: #8f8a75;
+  --gold: #b8964f;
+  --gold-bright: #d9b567;
+  --blood: #6e1e1e;
+  --f: var(--gold);
+  --display: "Pirata One", "UnifrakturCook", Georgia, serif;
+  --body: "EB Garamond", Georgia, "Times New Roman", serif;
+  --wrap: 66rem;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: 1rem; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse 90rem 60rem at 50% -10rem, #1a1712 0%, transparent 60%),
+    repeating-linear-gradient(180deg, rgba(255,255,255,.012) 0 1px, transparent 1px 3px),
+    var(--black);
+  color: var(--parchment);
+  font-family: var(--body);
+  font-size: 1.15rem;
+  line-height: 1.75;
+}
+
+a { color: inherit; }
+a:focus-visible, input:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--gold); color: var(--black); padding: .5rem 1rem; z-index: 10; }
+.skip:focus { left: 0; }
+
+main, .masthead, .footer { width: min(var(--wrap), 100% - 2.5rem); margin-inline: auto; }
+
+/* ---------- Cabecera ---------- */
+.masthead {
+  display: flex; flex-wrap: wrap; gap: .5rem 2rem;
+  align-items: center; justify-content: space-between;
+  padding: 1.4rem 0; border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: .6rem; font-family: var(--display); font-size: 1.5rem; text-decoration: none; color: var(--gold-bright); letter-spacing: .02em; }
+.cross { width: 1.1rem; height: 1.1rem; fill: var(--gold); flex: none; }
+.masthead nav { display: flex; gap: 1.75rem; }
+.masthead nav a { text-decoration: none; color: var(--parchment-dim); font-variant: small-caps; letter-spacing: .04em; }
+.masthead nav a:hover { color: var(--gold-bright); }
+
+/* ---------- Tipografía ---------- */
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.1; margin: 0; letter-spacing: .01em; }
+h2 { font-size: 2.1rem; margin: 2.75rem 0 .5rem; color: var(--parchment); }
+h3 { font-size: 1.5rem; color: var(--parchment); }
+p { margin: 0 0 1rem; max-width: 40rem; }
+.lede { font-size: 1.3rem; color: var(--parchment); max-width: 38rem; font-style: italic; }
+.muted { color: var(--parchment-dim); }
+code { font-size: .9em; background: var(--panel); padding: .1em .35em; border: 1px solid var(--line); }
+
+/* Adorno de separación: una cruz pequeña entre dos líneas */
+.ornament { display: flex; align-items: center; gap: .9rem; width: 100%; max-width: 26rem; margin: .9rem 0 1.6rem; color: var(--gold); }
+.ornament::before, .ornament::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent); }
+.ornament svg { width: .8rem; height: .8rem; fill: currentColor; flex: none; }
+
+/* ---------- Portada ---------- */
+.hero { position: relative; padding: 4.5rem 0 2.5rem; overflow: hidden; }
+.hero-inner { position: relative; max-width: 40rem; }
+.epigraph { font-style: italic; color: var(--parchment-dim); letter-spacing: .12em; text-transform: uppercase; font-size: .85rem; margin: 0 0 .5rem; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.2rem); color: var(--parchment); text-shadow: 0 0 40px rgba(184,150,79,.18); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1.6rem; }
+
+.rose {
+  position: absolute; top: -6rem; right: -8rem; width: 34rem; height: 34rem;
+  color: var(--gold); opacity: .1; pointer-events: none;
+}
+@media (max-width: 55rem) { .rose { width: 22rem; height: 22rem; top: -4rem; right: -9rem; } }
+
+.btn {
+  display: inline-block; font: inherit; font-size: 1rem; font-variant: small-caps; letter-spacing: .03em;
+  padding: .6rem 1.4rem; border: 1px solid var(--gold);
+  background: transparent; color: var(--gold-bright); text-decoration: none; cursor: pointer;
+  position: relative;
+}
+.btn:hover { background: rgba(184,150,79,.1); }
+.btn-primary { background: var(--gold); color: var(--black); }
+.btn-primary:hover { background: var(--gold-bright); }
+
+.search { display: flex; gap: .5rem; }
+.search input {
+  font: inherit; font-size: 1rem; color: var(--parchment);
+  background: var(--stone); border: 1px solid var(--line);
+  padding: .6rem .9rem; min-width: 14rem;
+}
+.search input::placeholder { color: var(--parchment-dim); }
+
+.filters { display: flex; flex-wrap: wrap; gap: .5rem .75rem; align-items: center; padding: 1.5rem 0 0; border-top: 1px solid var(--line-soft); margin-top: 1rem; }
+.filters-label { color: var(--parchment-dim); margin-right: .5rem; font-variant: small-caps; }
+.chip {
+  display: inline-flex; gap: .5rem; align-items: center;
+  padding: .3rem .85rem; border: 1px solid var(--line); text-decoration: none; font-size: .95rem; color: var(--parchment-dim);
+}
+.chip:hover { border-color: var(--gold); color: var(--parchment); }
+.chip.active { border-color: var(--gold); background: var(--panel); color: var(--gold-bright); }
+
+.side { margin-top: 3.5rem; }
+.side-head { max-width: 40rem; }
+.side-head p { color: var(--parchment-dim); }
+
+/* ---------- Lista de facciones ---------- */
+.ledger { list-style: none; margin: 1.25rem 0 0; padding: 0; }
+.ledger li { border-bottom: 1px solid var(--line-soft); }
+.ledger li:first-child { border-top: 1px solid var(--line-soft); }
+
+.row {
+  display: grid; grid-template-columns: auto minmax(0, 19rem) minmax(0, 1fr) auto;
+  gap: .25rem 1.25rem; align-items: center;
+  padding: 1.05rem 1rem 1.05rem 1.4rem; text-decoration: none;
+  border-left: 3px solid var(--f);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--f) 8%, transparent), transparent 40%);
+}
+.row:hover { background: linear-gradient(90deg, color-mix(in srgb, var(--f) 16%, transparent), transparent 60%); }
+.row:hover .row-name { color: var(--f); }
+.row-name { font-family: var(--display); font-size: 1.65rem; line-height: 1.2; color: var(--parchment); }
+.row-tag { color: var(--parchment-dim); font-style: italic; }
+.row-simple { grid-template-columns: auto minmax(0, 1fr) minmax(0, 20rem); }
+.row-simple .row-tag { color: var(--parchment); font-style: normal; }
+
+.emblem { width: 2.5rem; height: 2.5rem; color: var(--f); flex: none; }
+@media (max-width: 45rem) { .emblem { width: 2.1rem; height: 2.1rem; } }
+
+.dots { display: inline-flex; gap: .35rem; align-items: center; }
+.dot { width: .6rem; height: .6rem; border: 1px solid var(--f); transform: rotate(45deg); }
+.dot.on { background: var(--f); }
+.chip .dots, .meta .dots { --f: var(--gold); }
+
+.empty { padding: 3rem 0; }
+
+/* ---------- Página de facción ---------- */
+.crumbs { padding: 1.75rem 0 0; color: var(--parchment-dim); font-size: .95rem; }
+.crumbs a { text-decoration: none; }
+.crumbs a:hover { color: var(--gold-bright); }
+
+.faction-head {
+  position: relative; padding: 1.5rem 0 2.25rem 0; border-bottom: 1px solid var(--line);
+  display: flex; gap: 1.75rem; align-items: flex-start;
+}
+.faction-head::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px;
+  background: linear-gradient(90deg, var(--f), transparent 70%);
+}
+
+.emblem-large {
+  width: 6rem; height: 6rem; flex: none; color: var(--f);
+}
+@media (max-width: 34rem) { .emblem-large { width: 4.4rem; height: 4.4rem; } }
+
+.faction-head-text { min-width: 0; }
+.faction-head h1 { font-size: clamp(2.6rem, 7.5vw, 4.8rem); color: var(--f); max-width: 34rem; }
+.faction-tag { font-size: 1.35rem; margin: 1rem 0 0; max-width: 38rem; color: var(--parchment); font-style: italic; }
+.meta { display: flex; flex-wrap: wrap; gap: .25rem 1.75rem; color: var(--parchment-dim); margin: 0; }
+.meta-level { display: inline-flex; gap: .6rem; align-items: center; }
+
+.faction-body { display: grid; gap: 2rem 4rem; padding-bottom: 2rem; }
+@media (min-width: 60rem) { .faction-body { grid-template-columns: minmax(0, 1fr) 19rem; } }
+
+.prose h2:first-child { margin-top: 2.25rem; }
+.points { padding-left: 1.2rem; max-width: 40rem; list-style: none; }
+.points li { margin-bottom: .7rem; padding-left: 1.1rem; position: relative; }
+.points li::before { content: "†"; position: absolute; left: 0; color: var(--f); }
+
+.rivals { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
+.rivals a {
+  display: inline-block; padding: .4rem 1rem; text-decoration: none; color: var(--parchment-dim);
+  border: 1px solid var(--line); border-left: 3px solid var(--f); font-variant: small-caps;
+}
+.rivals a:hover { background: var(--panel); color: var(--parchment); }
+
+.side-notes { border-left: 1px solid var(--line); padding-left: 1.5rem; }
+@media (max-width: 59.99rem) { .side-notes { border-left: 0; border-top: 1px solid var(--line); padding: 0; } }
+.side-notes h2 { font-size: 1.5rem; margin-top: 2.25rem; }
+.side-notes section:first-child h2 { margin-top: 2.25rem; }
+.side-notes ul { padding-left: 1.1rem; }
+.side-notes li { margin-bottom: .5rem; }
+.side-notes li::marker { color: var(--f); }
+
+.pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 1.75rem 0 3rem; border-top: 1px solid var(--line-soft); }
+.pager a { color: var(--parchment-dim); text-decoration: none; font-style: italic; }
+.pager a:hover { color: var(--gold-bright); }
+
+/* ---------- Empezar aquí ---------- */
+.page { padding: 3rem 0 2rem; }
+.page h1 { font-size: clamp(2.6rem, 7.5vw, 4.6rem); color: var(--parchment); }
+
+.timeline { counter-reset: scene; list-style: none; padding: 0; margin: 1.25rem 0 0; max-width: 44rem; }
+.timeline li { counter-increment: scene; position: relative; padding: 0 0 1.9rem 3.5rem; border-left: 1px solid var(--line); margin-left: 1rem; }
+.timeline li:last-child { border-left-color: transparent; }
+.timeline li::before {
+  content: counter(scene); position: absolute; left: -1.15rem; top: -.1rem;
+  width: 2.3rem; height: 2.3rem; border: 1px solid var(--gold); background: var(--black); color: var(--gold-bright);
+  display: grid; place-items: center; font-family: var(--display); font-size: 1.15rem; transform: rotate(45deg);
+}
+.timeline li h3::before { content: ""; }
+.timeline h3 { margin-bottom: .4rem; color: var(--gold-bright); }
+
+.glossary { margin: 0; max-width: 44rem; }
+.glossary div { padding: .85rem 0; border-bottom: 1px solid var(--line-soft); }
+.glossary dt { font-family: var(--display); font-size: 1.35rem; color: var(--gold-bright); }
+.glossary dd { margin: 0; color: var(--parchment); }
+
+/* ---------- Pie ---------- */
+.footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--line); margin-top: 3.5rem; color: var(--parchment-dim); font-size: .9rem; text-align: center; }
+.footer .ornament { margin-inline: auto; }
+.footer p { max-width: 46rem; margin-inline: auto; }
+
+/* ---------- Móvil ---------- */
+@media (max-width: 45rem) {
+  .row, .row-simple { grid-template-columns: 1fr; }
+  .search input { min-width: 0; flex: 1; }
+  .search { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* ---------- Admin y formularios ---------- */
+.form { display: flex; flex-direction: column; gap: 1rem; max-width: 32rem; margin-top: 1rem; }
+.form label { display: flex; flex-direction: column; gap: .35rem; font-size: .95rem; color: var(--parchment-dim); }
+.form input, .form select, .form textarea {
+  font: inherit; font-size: 1rem; color: var(--parchment);
+  background: var(--stone); border: 1px solid var(--line); padding: .55rem .75rem;
+}
+.form input[readonly] { color: var(--parchment-dim); background: var(--panel); }
+.form input[type="color"] { padding: .2rem; height: 2.6rem; }
+.form textarea { resize: vertical; font-family: var(--body); }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; }
+.form-error { color: #e08a7d; border: 1px solid var(--blood); background: rgba(110,30,30,.15); padding: .6rem .9rem; margin: 0; }
+
+.btn-danger { border-color: var(--blood); color: #e08a7d; }
+.btn-danger:hover { background: rgba(110,30,30,.2); }
+
+.admin-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.admin-who { display: flex; align-items: center; gap: 1rem; }
+
+.admin-card {
+  border: 1px solid var(--line); background: var(--panel); margin-bottom: 1rem; padding: 0 1.25rem;
+}
+.admin-card summary {
+  cursor: pointer; padding: 1rem 0; font-family: var(--display); font-size: 1.25rem;
+  color: var(--gold-bright); display: flex; align-items: center; gap: .7rem;
+}
+.admin-card summary .emblem { width: 1.8rem; height: 1.8rem; }
+.admin-card[open] summary { border-bottom: 1px solid var(--line); margin-bottom: 1rem; }
+.admin-card .form { padding-bottom: 1.25rem; }
+.admin-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.admin-ledger { list-style: none; padding: 0; margin: 1rem 0; }
+
+/* ---------- Botón «Volver» ---------- */
+.back-link {
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--parchment-dim); text-decoration: none; font-size: .95rem;
+  margin: 1.25rem 0 0; font-variant: small-caps; letter-spacing: .02em;
+}
+.back-link svg { width: .9rem; height: .9rem; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.back-link:hover { color: var(--gold-bright); }
+.back-link:hover svg { transform: translateX(-3px); }
+.back-link svg { transition: transform .18s ease; }
+
+/* ---------- Animaciones ---------- */
+
+/* Paso suave entre páginas en navegadores compatibles (se ignora en el resto). */
+@view-transition { navigation: auto; }
+
+@keyframes entrada {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+main { animation: entrada .5s ease both; }
+
+/* Transiciones consistentes en todo lo interactivo. */
+a, button, .row, .chip, .dot, .emblem, .btn, .card, summary {
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease,
+              transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+
+.row:hover { transform: translateX(6px); }
+.row:hover .emblem { transform: rotate(6deg) scale(1.08); }
+
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+.btn:active { transform: translateY(0); box-shadow: none; }
+.btn-primary:hover { box-shadow: 0 4px 18px color-mix(in srgb, var(--gold) 35%, transparent); }
+
+.chip:hover { transform: translateY(-1px); }
+
+.rivals a { transition: color .18s ease, background-color .18s ease, transform .18s ease; }
+.rivals a:hover { transform: translateY(-1px); }
+
+.pager a { transition: color .18s ease, transform .18s ease; }
+.pager-prev:hover { transform: translateX(-3px); }
+.pager-next:hover { transform: translateX(3px); }
+
+.admin-card summary { transition: color .18s ease, background-color .18s ease; }
+.admin-card summary:hover { color: var(--gold-bright); }
+
+/* Brillo pausado en el emblema grande de cada ficha. */
+@keyframes brasa {
+  0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+  50% { filter: drop-shadow(0 0 8px color-mix(in srgb, var(--f) 55%, transparent)); }
+}
+.emblem-large { animation: brasa 5s ease-in-out infinite; }
+
+/* El rosetón y el separador aparecen con un desvanecido suave. */
+.rose { animation: entrada 1.1s ease both; }
+.ornament { animation: entrada .7s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

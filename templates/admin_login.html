@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% from "_macros.html" import ornament, back_button %}
+{% block title %}Acceso de administración{% endblock %}
+
+{% block content %}
+<section class="page admin-login">
+  {{ back_button() }}
+  <h1>Acceso de administración</h1>
+  {{ ornament() }}
+  <p class="lede">Solo para editar el contenido de la guía. Si no tienes cuenta, créala en el servidor con <code>flask --app app create-admin</code>.</p>
+
+  <form id="login-form" class="form">
+    <label>Usuario
+      <input type="text" name="username" autocomplete="username" required>
+    </label>
+    <label>Contraseña
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn-primary" type="submit">Entrar</button>
+    <p id="login-error" class="form-error" hidden></p>
+  </form>
+</section>
+
+<script>
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const errorBox = document.getElementById("login-error");
+  errorBox.hidden = true;
+
+  const body = JSON.stringify({
+    username: form.username.value,
+    password: form.password.value,
+  });
+
+  try {
+    const res = await fetch("{{ url_for('login') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "No se pudo iniciar sesión");
+
+    localStorage.setItem("admin_token", data.access_token);
+    localStorage.setItem("admin_username", data.username);
+    window.location.href = "{{ url_for('admin_page') }}";
+  } catch (err) {
+    errorBox.textContent = err.message;
+    errorBox.hidden = false;
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% from "_macros.html" import dots, ornament, emblem with context %}
+
+{% block content %}
+<section class="hero">
+  <svg class="rose" viewBox="-100 -100 200 200" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="rose-spoke">
+        <line x1="0" y1="14" x2="0" y2="84"/>
+        <circle cx="0" cy="58" r="17"/>
+      </g>
+    </defs>
+    <g fill="none" stroke="currentColor" stroke-width=".8">
+      <circle r="97"/><circle r="90"/><circle r="84"/><circle r="30"/><circle r="14"/>
+      <use href="#rose-spoke"/>
+      <use href="#rose-spoke" transform="rotate(30)"/>
+      <use href="#rose-spoke" transform="rotate(60)"/>
+      <use href="#rose-spoke" transform="rotate(90)"/>
+      <use href="#rose-spoke" transform="rotate(120)"/>
+      <use href="#rose-spoke" transform="rotate(150)"/>
+      <use href="#rose-spoke" transform="rotate(180)"/>
+      <use href="#rose-spoke" transform="rotate(210)"/>
+      <use href="#rose-spoke" transform="rotate(240)"/>
+      <use href="#rose-spoke" transform="rotate(270)"/>
+      <use href="#rose-spoke" transform="rotate(300)"/>
+      <use href="#rose-spoke" transform="rotate(330)"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <p class="epigraph">Memento mori</p>
+    <h1>Guía del Neófito</h1>
+    {{ ornament() }}
+    <p class="lede">En el milenio 41 no hay paz, solo guerra. Aquí tienes a cada bando explicado en un par de minutos: quién es, qué quiere y por dónde seguir leyendo.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('start') }}">Empezar aquí</a>
+      <form class="search" method="get" action="{{ url_for('index') }}" role="search">
+        <label class="sr" for="q">Buscar facción</label>
+        <input id="q" type="search" name="q" value="{{ q }}" placeholder="Buscar facción">
+        {% if nivel %}<input type="hidden" name="nivel" value="{{ nivel }}">{% endif %}
+        <button class="btn" type="submit">Buscar</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="filters" aria-label="Filtrar por dificultad de entrada">
+  <span class="filters-label">Dificultad de entrada</span>
+  <a href="{{ url_for('index', q=q or None) }}" class="chip{% if not nivel %} active{% endif %}">Todas</a>
+  {% for n, label in LEVELS.items() %}
+    <a href="{{ url_for('index', q=q or None, nivel=n) }}" class="chip{% if nivel == n %} active{% endif %}">{{ dots(n) }} {{ label }}</a>
+  {% endfor %}
+</section>
+
+{% if total == 0 %}
+  <section class="empty">
+    <h2>No hay resultados</h2>
+    <p>Ninguna facción coincide con {% if q %}«{{ q }}»{% endif %}{% if nivel %} en este nivel{% endif %}. Prueba con otro nombre o quita el filtro.</p>
+    <a class="btn" href="{{ url_for('index') }}">Ver todas las facciones</a>
+  </section>
+{% endif %}
+
+{% for key, side in SIDES.items() %}
+  {% if grouped[key] %}
+  <section class="side" aria-labelledby="side-{{ key }}">
+    <div class="side-head">
+      <h2 id="side-{{ key }}">{{ side.name }}</h2>
+      {{ ornament() }}
+      <p>{{ side.blurb }}</p>
+    </div>
+    <ul class="ledger">
+      {% for f in grouped[key] %}
+      <li style="--f: {{ f.color }}">
+        <a class="row" href="{{ url_for('faction', slug=f.slug) }}">
+          {{ emblem(f) }}
+          <span class="row-name">{{ f.name }}</span>
+          <span class="row-tag">{{ f.tagline }}</span>
+          {{ dots(f.difficulty) }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+{% endfor %}
+{% endblock %}

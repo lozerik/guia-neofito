@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% from "_macros.html" import dots, ornament, emblem, back_button with context %}
+{% block title %}{{ f.name }}{% endblock %}
+
+{% block content %}
+<article class="faction" style="--f: {{ f.color }}">
+  {{ back_button() }}
+  <nav class="crumbs" aria-label="Migas de pan">
+    <a href="{{ url_for('index') }}">Facciones</a> / <span>{{ SIDES[f.side].name }}</span>
+  </nav>
+
+  <header class="faction-head">
+    {{ emblem(f, size='emblem-large') }}
+    <div class="faction-head-text">
+      <h1>{{ f.name }}</h1>
+      <p class="faction-tag">{{ f.tagline }}</p>
+      {{ ornament() }}
+      <p class="meta">
+        <span>Tono: {{ f.tone }}</span>
+        <span class="meta-level">{{ dots(f.difficulty) }} {{ LEVELS[f.difficulty] }}</span>
+      </p>
+    </div>
+  </header>
+
+  <div class="faction-body">
+    <div class="prose">
+      <h2>Quiénes son</h2>
+      {% for p in f.summary %}<p>{{ p }}</p>{% endfor %}
+
+      <h2>Lo que conviene saber</h2>
+      <ul class="points">
+        {% for k in f.key_points %}<li>{{ k }}</li>{% endfor %}
+      </ul>
+
+      {% if rivals %}
+      <h2>Con quién chocan</h2>
+      <ul class="rivals">
+        {% for r in rivals %}
+        <li style="--f: {{ r.color }}"><a href="{{ url_for('faction', slug=r.slug) }}">{{ r.name }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <aside class="side-notes">
+      <section>
+        <h2>Personajes clave</h2>
+        <ul>{% for c in f.characters %}<li>{{ c.name }}</li>{% endfor %}</ul>
+      </section>
+      <section>
+        <h2>Para seguir leyendo</h2>
+        {% if f.books %}
+          <ul>{% for b in f.books %}<li>{{ b.title }}</li>{% endfor %}</ul>
+        {% else %}
+          <p class="muted">Aún no hay lecturas recomendadas para esta facción. Puedes añadirlas desde <a href="{{ url_for('admin_page') }}">el panel de administración</a>.</p>
+        {% endif %}
+      </section>
+    </aside>
+  </div>
+
+  <nav class="pager" aria-label="Facciones del mismo bando">
+    {% if prev_f %}<a class="pager-prev" href="{{ url_for('faction', slug=prev_f.slug) }}">Anterior: {{ prev_f.name }}</a>{% else %}<span></span>{% endif %}
+    {% if next_f %}<a class="pager-next" href="{{ url_for('faction', slug=next_f.slug) }}">Siguiente: {{ next_f.name }}</a>{% endif %}
+  </nav>
+</article>
+{% endblock %}

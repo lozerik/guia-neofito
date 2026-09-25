@@ -1,0 +1,47 @@
+{# Campos comunes al formulario de creación y edición de facción. #}
+<div class="form-grid">
+  <label>Slug (identificador único, sin espacios)
+    <input type="text" name="slug" value="{{ f.slug if f else '' }}" {% if f %}readonly{% endif %} required>
+  </label>
+  <label>Nombre
+    <input type="text" name="name" value="{{ f.name if f else '' }}" required>
+  </label>
+  <label>Bando
+    <select name="side">
+      {% for key, side in SIDES.items() %}
+      <option value="{{ key }}" {% if f and f.side == key %}selected{% endif %}>{{ side.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Color de acento
+    <input type="color" name="color" value="{{ f.color if f else '#b8964f' }}">
+  </label>
+  <label>Dificultad de entrada
+    <select name="difficulty">
+      {% for n, label in LEVELS.items() %}
+      <option value="{{ n }}" {% if f and f.difficulty == n %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Tono
+    <input type="text" name="tone" value="{{ f.tone if f else '' }}">
+  </label>
+</div>
+<label>Lema corto
+  <input type="text" name="tagline" value="{{ f.tagline if f else '' }}">
+</label>
+<label>Resumen (un párrafo por línea)
+  <textarea name="summary" rows="4">{% if f %}{{ f.summary|join('\n') }}{% endif %}</textarea>
+</label>
+<label>Puntos clave (uno por línea)
+  <textarea name="key_points" rows="3">{% if f %}{{ f.key_points|join('\n') }}{% endif %}</textarea>
+</label>
+<label>Personajes (uno por línea)
+  <textarea name="characters" rows="2">{% if f %}{{ f.characters|map(attribute='name')|join('\n') }}{% endif %}</textarea>
+</label>
+<label>Lecturas recomendadas (una por línea)
+  <textarea name="reading" rows="2">{% if f %}{{ f.books|map(attribute='title')|join('\n') }}{% endif %}</textarea>
+</label>
+<label>Facciones rivales (slugs separados por comas)
+  <input type="text" name="rivals" value="{{ f.rivals|join(', ') if f else '' }}">
+</label>

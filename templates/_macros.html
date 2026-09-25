@@ -1,0 +1,40 @@
+{# Volver: usa el historial del navegador si vienes de esta misma web
+   (conserva filtros y búsquedas), y si no, cae a un destino fijo. #}
+{% macro back_button(fallback_endpoint='index', label='Volver') %}
+<a href="{{ url_for(fallback_endpoint) }}" class="back-link" data-back>
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 4L7 12l8 8"/></svg>
+  {{ label }}
+</a>
+{% endmacro %}
+
+{# Puntos de dificultad: rombos, como en una vidriera #}
+{% macro dots(n) %}
+<span class="dots" role="img" aria-label="Dificultad de entrada: {{ n }} de 3 ({{ LEVELS[n] }})" title="{{ LEVELS[n] }}">
+  {%- for i in range(1, 4) -%}<span class="dot{% if i <= n %} on{% endif %}"></span>{%- endfor -%}
+</span>
+{% endmacro %}
+
+{# Separador con cruz #}
+{% macro ornament() %}
+<div class="ornament" aria-hidden="true">
+  <svg viewBox="0 0 24 24" focusable="false"><path d="M10 1h4v7h7v4h-7v11h-4V12H3V8h7z"/></svg>
+</div>
+{% endmacro %}
+
+{# Cruz pequeña para la cabecera #}
+{% macro cross() %}
+<svg class="cross" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 1h4v7h7v4h-7v11h-4V12H3V8h7z"/></svg>
+{% endmacro %}
+
+{# Emblema heráldico propio de la facción (ver icons.py). #}
+{% macro emblem(f, size='emblem') %}
+<svg class="{{ size }}" viewBox="0 0 64 64" role="img" aria-label="Emblema de {{ f.name }}">{{ ICONS[f.slug] | safe }}</svg>
+{% endmacro %}
+
+{# Ventana ojival (lancet) teñida con el color de la facción #}
+{% macro lancet() %}
+<svg class="lancet" viewBox="0 0 26 48" aria-hidden="true" focusable="false">
+  <path class="glass" d="M2 46V19C2 11 8 5 13 1c5 4 11 10 11 18v27z"/>
+  <path class="bars" d="M13 9v37M2 27h22"/>
+</svg>
+{% endmacro %}

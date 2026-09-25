@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% from "_macros.html" import ornament, emblem, back_button with context %}
+{% block title %}Panel de administración{% endblock %}
+
+{% block content %}
+<section class="page admin-page">
+  {{ back_button() }}
+  <div class="admin-head">
+    <div>
+      <h1>Panel de administración</h1>
+      {{ ornament() }}
+    </div>
+    <div class="admin-who">
+      <span id="admin-username" class="muted"></span>
+      <button id="logout-btn" class="btn">Salir</button>
+    </div>
+  </div>
+
+  <p id="auth-warning" class="form-error" hidden>
+    Tienes que <a href="{{ url_for('admin_login_page') }}">iniciar sesión</a> para editar la guía.
+  </p>
+
+  <div id="admin-content" hidden>
+    <details class="admin-card" open>
+      <summary>Añadir facción nueva</summary>
+      <form id="create-form" class="form" data-mode="create">
+        {% include "_faction_form_fields.html" %}
+        <button class="btn btn-primary" type="submit">Crear facción</button>
+        <p class="form-error" data-role="error" hidden></p>
+      </form>
+    </details>
+
+    <h2>Facciones existentes</h2>
+    <ul class="admin-ledger">
+      {% for f in factions %}
+      <li style="--f: {{ f.color }}">
+        <details class="admin-card">
+          <summary>{{ emblem(f) }} {{ f.name }}</summary>
+          <form class="form edit-form" data-mode="edit" data-slug="{{ f.slug }}">
+            {% include "_faction_form_fields.html" %}
+            <div class="admin-actions">
+              <button class="btn btn-primary" type="submit">Guardar cambios</button>
+              <button class="btn btn-danger" type="button" data-delete="{{ f.slug }}">Eliminar facción</button>
+            </div>
+            <p class="form-error" data-role="error" hidden></p>
+          </form>
+        </details>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<script>
+const token = localStorage.getItem("admin_token");
+const warning = document.getElementById("auth-warning");
+const content = document.getElementById("admin-content");
+
+if (!token) {
+  warning.hidden = false;
+} else {
+  content.hidden = false;
+  document.getElementById("admin-username").textContent =
+    "Sesión: " + (localStorage.getItem("admin_username") || "");
+}
+
+document.getElementById("logout-btn").addEventListener("click", () => {
+  localStorage.removeItem("admin_token");
+  localStorage.removeItem("admin_username");
+  window.location.href = "{{ url_for('admin_login_page') }}";
+});
+
+function linesToList(value) {
+  return value.split("\n").map((s) => s.trim()).filter(Boolean);
+}
+
+function commaToList(value) {
+  return value.split(",").map((s) => s.trim()).filter(Boolean);
+}
+
+function formToPayload(form) {
+  const f = new FormData(form);
+  return {
+    slug: (f.get("slug") || "").trim(),
+    name: f.get("name"),
+    side: f.get("side"),
+    tagline: f.get("tagline"),
+    color: f.get("color"),
+    tone: f.get("tone"),
+    difficulty: Number(f.get("difficulty")),
+    summary: linesToList(f.get("summary") || ""),
+    key_points: linesToList(f.get("key_points") || ""),
+    characters: linesToList(f.get("characters") || ""),
+    reading: linesToList(f.get("reading") || ""),
+    rivals: commaToList(f.get("rivals") || ""),
+  };
+}
+
+async function apiCall(url, method, payload) {
+  const res = await fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
+  return data;
+}
+
+document.querySelectorAll("form.form").forEach((form) => {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const errorBox = form.querySelector('[data-role="error"]');
+    if (errorBox) errorBox.hidden = true;
+    try {
+      const payload = formToPayload(form);
+      if (form.dataset.mode === "create") {
+        await apiCall("{{ url_for('api_create_faction') }}", "POST", payload);
+      } else {
+        await apiCall(`/api/facciones/${form.dataset.slug}`, "PUT", payload);
+      }
+      window.location.reload();
+    } catch (err) {
+      if (errorBox) {
+        errorBox.textContent = err.message;
+        errorBox.hidden = false;
+      }
+    }
+  });
+});
+
+document.querySelectorAll("[data-delete]").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const slug = btn.dataset.delete;
+    if (!confirm(`¿Eliminar la facción «${slug}»? No se puede deshacer.`)) return;
+    try {
+      await apiCall(`/api/facciones/${slug}`, "DELETE", {});
+      window.location.reload();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+});
+</script>
+{% endblock %}

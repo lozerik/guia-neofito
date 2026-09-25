@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "_macros.html" import ornament, emblem with context %}
+{% block title %}Empezar aquí{% endblock %}
+
+{% block content %}
+<section class="page">
+  <h1>Empezar aquí</h1>
+  {{ ornament() }}
+  <p class="lede">Warhammer 40.000 tiene décadas de historia, pero para entender a cualquier facción te bastan cinco escenas y unas pocas palabras.</p>
+
+  <h2>La historia en cinco escenas</h2>
+  <ol class="timeline">
+    {% for step in timeline %}
+    <li>
+      <h3>{{ step.title }}</h3>
+      <p>{{ step.text }}</p>
+    </li>
+    {% endfor %}
+  </ol>
+
+  <h2>Palabras que verás en todas partes</h2>
+  <dl class="glossary">
+    {% for term, text in glossary %}
+    <div>
+      <dt>{{ term }}</dt>
+      <dd>{{ text }}</dd>
+    </div>
+    {% endfor %}
+  </dl>
+
+  <h2>¿Con quién empiezo?</h2>
+  <ul class="ledger">
+    {% for label, f in tastes %}
+    <li style="--f: {{ f.color }}">
+      <a class="row row-simple" href="{{ url_for('faction', slug=f.slug) }}">
+        {{ emblem(f) }}
+        <span class="row-tag">{{ label }}</span>
+        <span class="row-name">{{ f.name }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% from "_macros.html" import back_button %}
+{% block title %}No encontrado{% endblock %}
+{% block content %}
+<section class="page">
+  {{ back_button() }}
+  <h1>Esta página no existe</h1>
+  <p class="lede">Puede que la dirección esté mal escrita o que esa facción aún no esté en la guía.</p>
+  <a class="btn" href="{{ url_for('index') }}">Volver a las facciones</a>
+</section>
+{% endblock %}
