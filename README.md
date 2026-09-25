@@ -53,14 +53,6 @@ En producción, define `JWT_SECRET_KEY` como variable de entorno con un valor al
 
 Los `rivals` son `slug` de otras facciones.
 
-## Ideas para seguir
-
-- Refresh tokens y expiración configurable para el login.
-- Migraciones con Flask-Migrate/Alembic en vez de `db.create_all()`.
-- Tests con `pytest` (ahora mismo la cobertura viene de pruebas manuales con el cliente de Flask).
-- Docker + despliegue real (Render, Railway, Fly.io) con Postgres en vez de SQLite.
-- Subfacciones (Capítulos de Marines, Dinastías necronas, Clanes orkos) como otra tabla relacionada.
-
 ## Aviso
 
 Proyecto de fans sin ánimo de lucro. Warhammer 40.000 es una marca de Games Workshop. Los textos son resúmenes propios; conviene comprobar los títulos de los libros en la Black Library antes de publicar.
